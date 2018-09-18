@@ -5,24 +5,15 @@ class Api::V1::AuthController < ApplicationController
     @user = User.find_by(username: user_login_params[:username])
     if @user && @user.authenticate(user_login_params[:password])
       token = encode_token({user_id: @user.id})
-      render json: {user: @user.for_login, jwt: token}, status: :accepted
+      render json: {user: @user.for_login, jwt: token}, status: :created
     else
       render json: { message: 'Invalid username or password'}, status: 401
     end
   end
 
-  # def reauth
-  #     render json: @user.to_json(
-  #         include: {
-  #             decks: {
-  #                 include: [
-  #                     :cards,
-  #                     :stars,
-  #                     :forks
-  #                   ]
-  #                   }
-  #                 }), status: 202
-  # end
+  def reauth
+    render json: @user.for_login, status: :accepted
+  end
   #
   # def create
   #   @user = User.new(username: user_login_params[:username], password: user_login_params[:password])

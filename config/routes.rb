@@ -3,12 +3,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users
+      resources :users, only: :create
       resources :decks
       resources :cards
       post '/login', to: 'auth#login'
-      post '/signup', to: 'auth#create'
-      post '/reauth', to: 'auth#reauth'
+      get '/reauth', to: 'auth#reauth'
       get '/public_decks', to: 'decks#public'
     end
   end
